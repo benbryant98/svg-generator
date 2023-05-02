@@ -28,28 +28,38 @@ inquirer
     },
   ])
   .then((answers) => {
-    let svgImage = ``;
-
-    switch (answers.shape) {
-      case "Circle":
-        svgImage = `<svg version="1.1" height="200" width="300">
-        <circle cx="150" cy="100" r="100" fill="${answers.shapeColor}" />
-        <text x="150" y="50%" dominant-baseline="middle" font-size="80" text-anchor="middle" fill="${answers.textColor}">${answers.company}</text>
-        </svg>`;
-        break;
-      case "Square":
-        svgImage = `<svg version="1.1" height="300" width="200">
-        <rect x="0" y="50" width="300" height="200" fill="${answers.shapeColor}" />
-        <text x="50%" y="50%" dominant-baseline="middle" font-size="80" text-anchor="middle" fill="${answers.textColor}">${answers.company}</text>
-        </svg>`;
-        break;
-      case "Triangle":
-        svgImage = `<svg version="1.1" height="300" width="200">
-        <polygon points="50 15, 100 100, 0 100" fill="${answers.shapeColor}" />
-        <text x="50" y="85" dominant-baseline="middle" font-size="40" text-anchor="middle" fill="${answers.textColor}">${answers.company}</text>
-        </svg>`;
-    }
+    let svgImage = renderShape(
+      answers.company,
+      answers.textColor,
+      answers.shape,
+      answers.shapeColor
+    );
     fs.writeFileSync("logo.svg", svgImage);
 
     console.log(answers);
   });
+
+const renderShape = (text, textColor, shape, shapeColor) => {
+  switch (shape) {
+    case "Circle":
+      svgImage = `<svg version="1.1" height="200" width="300">
+      <circle cx="150" cy="100" r="100" fill="${shapeColor}" />
+      <text x="150" y="50%" dominant-baseline="middle" font-size="80" text-anchor="middle" fill="${textColor}">${text}</text>
+      </svg>`;
+      return svgImage;
+    case "Square":
+      svgImage = `<svg version="1.1" height="300" width="200">
+      <rect x="0" y="50" width="300" height="200" fill="${shapeColor}" />
+      <text x="50%" y="50%" dominant-baseline="middle" font-size="80" text-anchor="middle" fill="${textColor}">${text}</text>
+      </svg>`;
+      return svgImage;
+    case "Triangle":
+      svgImage = `<svg version="1.1" height="300" width="200">
+      <polygon points="50 15, 100 100, 0 100" fill="${shapeColor}" />
+      <text x="50" y="85" dominant-baseline="middle" font-size="40" text-anchor="middle" fill="${textColor}">${text}</text>
+      </svg>`;
+      return svgImage;
+  }
+};
+
+module.exports = renderShape;
